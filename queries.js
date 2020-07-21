@@ -19,18 +19,22 @@ const getAnime = (request, response) => {
 const getAnimeById = (request, response) => {
   const id = parseInt(request.params.id);
 
-  pool.query("SELECT * FROM animeList WHERE id = $1", [id], (error, results) => {
-    if (error) {
-      throw error;
+  pool.query(
+    "SELECT * FROM animeList WHERE id = $1",
+    [id],
+    (error, results) => {
+      if (error) {
+        throw error;
+      }
+      response.status(200).json(results.rows);
     }
-    response.status(200).json(results.rows);
-  });
+  );
 };
 const createAnime = (request, response) => {
   const { title, author, release_year } = request.body;
 
   pool.query(
-    "INSERT INTO animeList (title, last, release_year) VALUES ($1, $2, $3)",
+    "INSERT INTO animeList (title, author, release_year) VALUES ($1, $2, $3)",
     [title, author, release_year],
     (error, results) => {
       if (error) {
